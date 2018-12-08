@@ -4,18 +4,38 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=1024, user-scalable=no">
+
+    <link rel="stylesheet" href="script/jquery-ui.structure.min.css" />
+    <link rel="stylesheet" href="script/jquery-ui.theme.min.css" />
     <link rel="stylesheet" href="style/leaflet.css" />
     <link rel="stylesheet" href="style/main-style.css" />
 <!--[if lte IE 8]>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.6.4/leaflet.ie.css" />
 <![endif]-->
+<script src="script/d3.min.js"></script>
+<script src="script/d3pie.min.js"></script>
 
 <script src="script/leaflet-src.js"></script>
-<script type="text/javascript" src="https://unpkg.com/jquery@3.2.1/dist/jquery.js"></script>
+<script src="script/multi-style-layer.js"></script>
+<script src="script/w3.js"></script>
+<script type="text/javascript" src="script/jquery.js"></script>
+<script src="script/jquery-ui.min.js"></script>
+
 <script src="data/acs_2016.js"></script>
 <script src="data/acs_2010.js"></script>
 <script src="data/census_2000.js"></script>
 <script src="data/census_1990.js"></script>
+
+<script src="data/route_shapes_filtered.js"></script>
+<script src="data/route_shapes.js"></script>
+<script src="data/route_shapes_old.js"></script>
+
+<script src="data/route_stops.js"></script>
+<script src="data/route_race_2016.js"></script>
+<script src="data/route_stop_catchments.js"></script>
+<script src="data/routes.js"></script>
+<script src="data/results_atl_race_2016.js"></script>
+<script src="data/stop_demo.js"></script>
 
 <link href="https://fonts.googleapis.com/css?family=Martel+Sans:300,700" rel="stylesheet"> 
 
@@ -23,7 +43,7 @@
     </head>
     <body>
       <select name="demo_select" id="demo_select">
-            <option value="theil_T">Theil's T Index</option>
+            <option value="dot_map">Demographic Dot Map</option>
             <option value="median_inc">Median Income</option>
             <option value="pc_vulnerable">% Population Vulnerable</option>
             <option value="pc_am_in">% Population American Indian Alone</option>     
@@ -34,182 +54,80 @@
             <option value="pc_other">% Population Other Alone</option>
             <option value="pc_2_o_more">% Population Two or More</option>
             <option value="pc_white">% Population White Alone</option>
-
+            <option value="theil_T">Theil's T Index</option>
       </select>
-    <div id="map"></div>
+    <div id="map">
+    </div>
+    <div id="basemapslidercontainer">
+            <div id="basemapslider"></div>
+    </div>
     <button id="zoom-to"></button>
     <a href="#" id="bottom-pane-button" class="info button-up">⇅</a>
     <div id="range-container" class="info">
-        <p>demography opacity</p>
-        <input type="range" id="map-opacity" step=".01" min="0" max="1" value=".7">
-        <hr>
-        <p>data set</p>
+        <p><b>Select Survey Year:</b></p>
         <input type="range" id="time-range" step="1" min="0" max="3" value="3">
         <table>
-            <tr>
-                <th>1990</th>
-                <th>2000</th>
-                <th>2010</th>
-                <th>2016</th>
-            </tr>
+            <tr><td>1990</td><td>2000</td><td>2010</td><td>2016</td></tr>
         </table>
     </div>
     <div id="bottom-pane">
         <div id="primary-route">
-            <table>
+            <table id="main-table">
                 <tr>
-                    <th>Route Name</th>
-                    <th>Route Number</th>
+                <th>Route Name</th>
+                <th>Agency</th>
+
                 </tr>
                 <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
-                </tr>
-                <tr>
-                    <td>Route A</td>
-                    <td>Route 1</td>
+                    <td>
+                        <a href="#" id="6278"></a>
+                    </td>
                 </tr>
             </table>
         </div>
         <div id="route-pair">
-            <table>
+            <table id="pair-table">
                 <tr>
-                    <th>
-                        Route Name
-                    </th>
-                    <th>
-                        Route Number
-                    </th>
-                    <th>
-                        Parallelism to Selected Route
-                    </th>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
-                </tr>
-                <tr>
-                    <td>Route B</td>
-                    <td>Route 2</td>
-                    <td>0.8 / 1</td>
+                    <th>Route Name</th>
+                    <th onclick="w3.sortHTML('#pair-table', '.pair_row', 'td:nth-child(2)')" style="cursor:pointer">Agency</th>
+                    <th onclick="w3.sortHTML('#pair-table', '.pair_row', 'td:nth-child(3)')" style="cursor:pointer">Collinearity</th>
+                    <th onclick="w3.sortHTML('#pair-table', '.pair_row', 'td:nth-child(4)')" style="cursor:pointer">χ2</th>
                 </tr>
             </table>
 
         </div>
     </div>
+    <div class="info main hidden" id="checkbox_container">
+        <h2>Main Route</h2>
+        <input type="checkbox" value="route" id="route_check" checked>Route<br>
+        <!--<input type="checkbox" value="stops" id="stop_check">Stops<br>-->
+        <input type="checkbox" value="stop_catch" id="stop_catch_check">Catchment<br>
+        <input type="checkbox" value="demography" id="demography">Demography<br>
+    </div>
+        <div class="info main hidden" id="pair_checkbox_container">
+        <h2>Pair Route</h2>
+        <input type="checkbox" value="route" id="pair_route_check" checked>Route<br>
+        <!--<input type="checkbox" value="stops" id="pair_stop_check">Stops<br>-->
+        <input type="checkbox" value="stop_catch" id="pair_stop_catch_check">Catchment<br>
+        <input type="checkbox" value="demography" id="pair_demography">Demography<br>
+    </div>
+    <div id="dot_legend" class="info">
+        <p><b>1 dot = 50 people</b></p>
+        <table>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#fff800"/></svg></td><td>American Indian or Native Alaskan</td></tr>
+            <tr><td><svg><circle cx="5" cy="5"r="5" fill="#ff8b00"/></svg></td><td>Asian</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#0068ff"/></svg></td><td>African American or Black</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#ff0025"/></svg></td><td>Latinx or Hispanic</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#9500ff"/></svg></td><td>Native Hawiian or Pacific Islander</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#26ff00"/></svg></td><td>Two or More Ethnicities</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#00ffd4"/></svg></td><td>Other Ethnicity</td></tr>
+            <tr><td><svg><circle cx="5" cy="5" r="5" fill="#ff8fda"/></svg></td><td>White</td></tr>
+        </table>
+    </div>
+    <div class="invisible" id="pie_chart_main"></div>
+    <div class="invisible" id="pie_chart_pair"></div>
+    <div class="invisible" id="demo_overlay"></div>
+    <button id="reset-map">reset map</button>
     <script src="script/scripts.js"></script>
 
     </body>

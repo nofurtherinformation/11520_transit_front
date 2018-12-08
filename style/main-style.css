@@ -3,11 +3,16 @@
         height: 100%; 
         margin: 0; 
         padding: 0;
-        font-family: 'Martel Sans', sans-serif;
+        font-family: 'Martel Sans', sans-serif !important;
+
       }
     #map{ 
         height: 100%;
+        cursor:all-scroll;
       }
+    svg {
+      cursor: crosshair;
+    }
     #zoom-to {
         display: none;
         position: fixed;
@@ -36,11 +41,11 @@
       }
     .info {
         padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
         background: white;
         background: rgba(255,255,255,0.8);
         box-shadow: 0 0 15px rgba(0,0,0,0.2);
         border-radius: 5px;
+        font-size:10px;
     }
     .info h4 {
     margin: 0 0 5px;
@@ -59,10 +64,11 @@
     }
     #demo_select {
         position: fixed;
-        right:20px;
-        bottom:200px;
+        left:50%;
+        top:0;
         z-index: 5000;
         text-align: center;
+        transform: translate(-50%, 0);
     }
     .fade_block {
       transition: 250ms all;
@@ -108,8 +114,8 @@
     } 
     #range-container {
     	position: fixed;
-    	bottom:20px;
-    	left:20px;
+    	bottom:50px;
+    	left:10px;
     	background-color: white;
     	padding:10px 10px 0 10px;
     	z-index: 5000;
@@ -225,14 +231,6 @@ input[type=range]:focus::-ms-fill-upper {
   background: #3071A9;
 }
 
-Presets
-Click on the thumb to update input range style.
-
-
-
-
-
-
 
 
     #primary-route {
@@ -255,12 +253,12 @@ Click on the thumb to update input range style.
     }
     .shown {
         padding:20px 10% !important;
-        height:40% !important;
+        height:30% !important;
     }
     #bottom-pane-button {
         position: fixed;
         width:2%;
-        left:49%;
+        left:50%;
         bottom:-5px;
         background-color: white;
         z-index: 10000;
@@ -268,10 +266,12 @@ Click on the thumb to update input range style.
         text-decoration: none;
         color:black;
         transition:500ms all;
+        transform: translate(-50%, 0);
     }
     #bottom-pane-button.active {
-        bottom:44%;
-        opacity:0.9;
+        bottom:34.2%;
+        box-shadow: none;
+        opacity: 0.9
     }
 @keyframes march {
 	from {stroke-dashoffset:0em;}
@@ -281,12 +281,155 @@ Click on the thumb to update input range style.
 	0% {stroke-dashoffset:0em;}
 	100% {stroke-dashoffset:2em;}
 }
-.marching {
+@keyframes march_rev {
+  from {stroke-dashoffset:0em;}
+  to {stroke-dashoffset:-2em;}
+}
+@-webkit-keyframes march_rev {
+  0% {stroke-dashoffset:0em;}
+  100% {stroke-dashoffset:-2em;}
+}
+.route_main_passive {
+  stroke: #fff;
+  stroke-width:4;
+  position: relative;
+}
+.padded {
+  padding:20px;
+}
+.animated_route {
 	stroke-linecap: round;
 	stroke-dasharray: 1em;
 	stroke-dashoffset:0;
-	stroke: white;
-	stroke-width:2;
-	animation: march 4s 	 infinite;
-	-webkit-animation: march 4s linear infinite;
+	animation: march 2s infinite;
+	-webkit-animation: march 2s linear infinite; 
+}
+.animated_route_reverse {
+  stroke-linecap: round;
+  stroke-dasharray: 1em;
+  stroke-dashoffset:0;
+  animation: march_rev 2s infinite;
+  -webkit-animation: march_rev 2s linear infinite; 
+}
+td.hide_div div{
+  display:none;
+}
+td {
+  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+#checkbox_container, #pair_checkbox_container {
+  background-color: white;
+  position: fixed;
+  right:10px;
+  top:60px;
+  z-index:500000;
+  min-width:5%;
+}
+#pair_checkbox_container {
+  top:227px;
+}
+.no-int {
+  pointer-events: none;
+}
+.no-int a {
+  color:gray;
+}
+.active_cell {
+  pointer-events: auto;
+  font-weight: bold;
+
+}
+.active_cell a {
+  color:black;
+}
+.stop_catch, .pair_catch {
+}
+.hidden {
+  display:none;
+}
+.leaflet-container img.leaflet-image-layer {
+    max-width: none !important;
+    }
+#dot_legend {
+  position: fixed;
+  bottom:25px;
+  right:10px;
+  z-index:998;
+}
+#dot_legend svg {
+  width:10px;
+  height:10px;
+}
+
+#pie_chart_main, #pie_chart_pair {
+  position: fixed;
+  top:30px;
+  left:25%;
+  pointer-events: none;
+  z-index:5000;
+  border-radius: 5px;
+  color:yellow;
+  transform: translateX(-50%);
+}
+
+#pie_chart_pair {
+  left:75%;
+  color:teal;
+}
+#demo_overlay {
+  pointer-events: none;
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+.invisible {
+  visibility: hidden;
+}
+#basemapslidercontainer {
+  position: absolute;
+  top: 20px;
+  left:50%;
+  z-index: 5000;
+  transform: translate(-50%, 0);
+}
+
+#basemapslider{
+  font-size:62.5%;
+  margin: 14px;
+  height: 7px;
+  width:125px;
+}
+#reset-map {
+  position:fixed;
+  top:20px;
+  left:50px;
+  z-index:500;
+}
+.leaflet-map-pane .leaflet-overlay-pane svg path {
+  
+}
+#stop_popup {
+  width:400px;
+  height:150px;
+}
+#stop_popup svg {
+  transform: translateY(-25%);
+}
+.demo_popup {
+  width:400px;
+  text-align: center !important;
+  margin:0;
+  padding:10px 0 0 0 ;
+}
+.demo_popup .leaflet-popup-content{
+  width:400px !important;
+  margin:0;
+  text-align: center;
 }
